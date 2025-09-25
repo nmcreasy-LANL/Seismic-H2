@@ -7,44 +7,15 @@ Uploaded version
 """
 
 # Filename: snuhs.py
-# Purpose:  Seismic Network Capability Assessment Software Tool (SNCAST)
-# Author:   Martin Möllhoff, DIAS
+# Author:   Neala Creasy
+# Citation: TBD
+#
+# Parts of this code use SNCAST
 # Citation: Möllhoff, M., Bean, C.J. & Baptie, B.J.,
 #           SN-CAST: seismic network capability assessment software tool
 #           for regional networks - examples from Ireland. 
 #           J Seismol 23, 493-504 (2019). https://doi.org/10.1007/s10950-019-09819-0
-#
-# You can run SNCAST in a browser, without a python installation on your computer:
-#
-#        - browse to https://github.com/moellhoff/Jupyter-Notebooks
-#        - click on the "launch binder" icon
-#        - wait a few minutes until the repository finished the starting process
-#        - in the folder 'SNCAST' click "sncast-getting-started.ipynb" and follow the instructions
-#
-#    Copyright (C) 2019 Martin Möllhoff
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-
-
-#YAO HUANG#
-
-#this code is to generate an automatic calculation for the Seismic Monitoring of UHS for a certain site
-
-#input comes from reports published in literature as well as simulation output
-
-#INPUT# 
+#        
 
 from obspy import read
 from obspy.io.xseed import Parser
@@ -118,13 +89,7 @@ def captital_cost_SM_UHS (FLAG_GC,UCSGC,ND, #active seismic
     #Borehole: #29k
     #geotechnical: $29k
     #array construction: $19k
-    
-    
-    # note the PA plume area is changing as project time increases. Q:will this change affect all the subcost?
-    
-
-#q: how many arrays per well, is the cost of array related to the length and depth
-    
+            
     RAD = math.sqrt(PA/math.pi)
     SMA=math.pi*(RAD+Depth)**2
 
@@ -207,7 +172,7 @@ def captital_cost_SM_UHS (FLAG_GC,UCSGC,ND, #active seismic
     return (TC,TCSGC,TCSA,TCISA,TCOSA,TCIL,TCSOV,DM)
 
 
-#
+
 def total_stations (dir_in,region,PlumeSize,PlumeDepth,AvgStatNoise,BHStatNoise,MinMag,stat_spacing,stat_num,snr,NBW,boredepth,seis_spacing,locy,locx,nsb,mag_delta):
 
     """
@@ -252,9 +217,6 @@ def total_stations (dir_in,region,PlumeSize,PlumeDepth,AvgStatNoise,BHStatNoise,
     #AvgStatNoise = 0.5 #average noise in period of interest for selected stations (nm)
     #MinMag = -1.5
     
-    #question: How many stations do you need to do that for your plume?
-    #depends on noise of stations, depth of plume (we can assume that those will be the deepest events), station spacing, number of stations
-    #stat_spacing = 5 #km
     halfplume = PlumeSize/2
     Spacing = np.arange(-halfplume,halfplume+stat_spacing,stat_spacing)
     
@@ -416,7 +378,7 @@ def total_stations (dir_in,region,PlumeSize,PlumeDepth,AvgStatNoise,BHStatNoise,
 def minML(filename, dir_in='./', lon0=-12, lon1=-4, lat0=50.5, lat1=56.6, dlon=0.33,
           dlat=0.2,stat_num=4, snr=3, foc_depth=0, region='CAL', mag_min=-3.0, mag_delta=0.1):
     """
-    This routine calculates the geographic distribution of the minimum 
+    SN-CAST: This routine calculates the geographic distribution of the minimum 
     detectable local magnitude ML for a given seismic network. Required 
 #### 9.10.2020    input is a file containg four comma separated
     columns containing for each seismic station:
@@ -593,7 +555,6 @@ def station_noise (datafile,f1,f2,stationname,metadata,f0,n,pplength,filter1 = T
     ppsd.add(tr)
     print("number of psd segments:", len(ppsd.times_processed))
     ppsd.plot()
-#    ppsd.plot("/Users/nmcreasy/Downloads/kwi.png")  
     
     f11 = f0*2**(-n/2)
     f22 = f0*2**(n/2)
@@ -605,7 +566,6 @@ def station_noise (datafile,f1,f2,stationname,metadata,f0,n,pplength,filter1 = T
     value2 = find_closest_index(freq,f22)
     Dbs_range = np.mean(Dbs[value2:value1])
     Pa = 10**(Dbs_range/10)#m/s
-   # print(Dbs_range)
 
     dap = 3.75/(2*math.pi*f0)**2*math.sqrt(Pa*(f22-f11)) * 1e+9
     
@@ -676,27 +636,6 @@ def Levelized_cost (TCC,WGC,t):
     LTCC= TCC*CRF/CF #calculate the levelized total capital costs
 
     #print(LTCC/WGC)
-    
-    # compressor operation cost 
-    #CP=2.2     #compressor power kWh/kg H2    
-
-    #UPE=0.128 #uniit price of electricity ($/kWh)
-
-    #WR= 50#water requirement L/kg H2
-
-    #UPWC=0.02 #unit price of water and cooling $/100L H2O
-
-   # COMC= CP*UPE+WR*UPWC/100 #compressor operation and maintenace cost  $/kg
-    
-    # Well operation and maintenance cost 
-    
-    #WOMC= 0.04627+0.00403 #well operation and maintenance cost 
-    
-    # production water disposal cost (PWDC)
-    
-    # unrecoverable hydrogen cost 
-    
-    
 
     LCHS=LTCC/WGC#+COMC+WOMC #calculate levelized cost of hydrogen storage 
 
