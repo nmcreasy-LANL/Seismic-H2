@@ -1,1 +1,5 @@
 In this folder, I have seperated the necessary commands to conduct network performance analysis that includes calculating minimum magnitude maps and noise estimation for selected frequencies.
+
+sncast.py is the original code for minimum magnitude detection
+
+NetworkPerformance.py has noise estimation for selection frequency and additional attributes. 
