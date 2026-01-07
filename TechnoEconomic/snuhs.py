@@ -8,7 +8,7 @@ Uploaded version
 
 # Filename: snuhs.py
 # Author:   Neala Creasy
-# Citation: TBD
+# Citation: Creasy, N. (2025). Seismic_H2. In https://github.com/nmcreasy-LANL/Seismic-H2
 #© 2025. Triad National Security, LLC. All rights reserved.
 
 #This program was produced under U.S. Government contract 89233218CNA000001 
